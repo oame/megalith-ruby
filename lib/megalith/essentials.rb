@@ -16,6 +16,7 @@ class Megalith
     end
 
     def send_req(url)
+      pp url
       uri = URI.parse(url)
 
       Net::HTTP.version_1_2

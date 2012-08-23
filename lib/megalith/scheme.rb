@@ -9,9 +9,10 @@ class Megalith
     attr_reader :key
 
     def initialize(base_url, log, key)
-      @novel = fetch_novel(base_url, log, key)
+      relative_log = (log < 1) ? fetch_subjects(base_url).size : log
+      @novel = fetch_novel(base_url, relative_log, key)
       @base_url = base_url
-      @log = (log < 1) ? fetch_subjects(base_url).first : log
+      @log = relative_log
       @key = key
     end
     
@@ -30,7 +31,7 @@ class Megalith
         :aft => aft,
         :author => Author.new(:name => meta[1], :email => meta[2], :website => meta[3]),
         :tags => meta[12].split(/[\s　]/),
-        :log => log,
+        :log => relative_log,
         :key => key,
         :created_at => Time.at(key),
         :updated_at => Time.parse(meta[7]),
@@ -43,7 +44,7 @@ class Megalith
         :text_color => meta[10],
         :convert_newline => meta[11],
         :size => text.bytesize / 1024,
-        :url => URI.join(base_url, "?mode=read&key=#{key}&log=#{log}").to_s,
+        :url => URI.join(base_url, "?mode=read&key=#{key}&log=#{relative_log}").to_s,
         :comments => comments
       }
       return novel
@@ -203,8 +204,10 @@ class Megalith
     end
 
     def fetch_subject(base_url, log)
-      log = fetch_subjects(base_url).first if log < 1
-      page = send_req(File.join(base_url, "sub", "subject#{(log < 1) ? "" : log}.txt"))
+      fs = fetch_subjects(base_url)
+      absolute_log = (fs.size <= log || log < 1) ? "" : log
+      relative_log = (log < 1) ? fs.size : log
+      page = send_req(File.join(base_url, "sub", "subject#{absolute_log}.txt"))
       subject = page.split("\n").map{|i| i.split("<>")}
 
       indexes = []
@@ -212,7 +215,7 @@ class Megalith
         key = index[0].gsub(/[^0-9]/, "").to_i
         comment_count, review_count = index[5].split("/")
         indexes << Index.new(base_url, {
-          :log => log,
+          :log => relative_log,
           :key => key,
           :title => index[1],
           :author => index[2],
@@ -228,19 +231,19 @@ class Megalith
           :text_color => index[11],
           :convert_newline => index[12],
           :size => index[14].to_f,
-          :url => URI.join(base_url, "?mode=read&key=#{key}&log=#{log}").to_s
+          :url => URI.join(base_url, "?mode=read&key=#{key}&log=#{absolute_log}").to_s
         })
       end
       return indexes.reverse
     end
 
     def next_page
-      Subject.new(@base_url, (@log < 1) ? fetch_subjects(@base_url).last : @log)
+      Subject.new(@base_url, @log-1)
     end
     alias_method :next, :next_page
 
     def prev_page
-      Subject.new(@base_url, (fetch_subjects(@base_url).size <= @log+1) ? 0 : @log)
+      Subject.new(@base_url, @log+1)
     end
     alias_method :prev, :prev_page
     
