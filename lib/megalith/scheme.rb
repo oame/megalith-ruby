@@ -231,7 +231,7 @@ class Megalith
           :text_color => index[11],
           :convert_newline => index[12],
           :size => index[14].to_f,
-          :url => URI.join(base_url, "?mode=read&key=#{key}&log=#{absolute_log}").to_s
+          :url => URI.join(base_url, "?mode=read&key=#{key}&log=#{relative_log}").to_s
         })
       end
       return indexes.reverse
