@@ -31,7 +31,7 @@ class Megalith
         :aft => aft,
         :author => Author.new(:name => meta[1], :email => meta[2], :website => meta[3]),
         :tags => meta[12].split(/[\s　]/),
-        :log => relative_log,
+        :log => log,
         :key => key,
         :created_at => Time.at(key),
         :updated_at => Time.parse(meta[7]),
