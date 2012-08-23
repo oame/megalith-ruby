@@ -3,6 +3,8 @@
 class Megalith  
   class Novel
     include Essentials
+    attr_reader :novel
+    attr_reader :base_url
     attr_reader :log
     attr_reader :key
 
@@ -163,6 +165,7 @@ class Megalith
   end
   
   class Index
+    attr_reader :base_url
     attr_reader :index
     def initialize(base_url, index)
       @base_url = base_url
@@ -189,6 +192,8 @@ class Megalith
   class Subject < Array
     include Essentials
     attr_reader :subject
+    attr_reader :base_url
+    attr_reader :log
     
     def initialize(base_url, log)
       @subject = fetch_subject(base_url, log)
