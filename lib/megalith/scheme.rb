@@ -44,7 +44,7 @@ class Megalith
         :text_color => meta[10],
         :convert_newline => meta[11],
         :size => text.bytesize / 1024,
-        :url => URI.join(base_url, "?mode=read&key=#{key}&log=#{relative_log}").to_s,
+        :url => URI.join(base_url, "?mode=read&key=#{key}&log=#{log}").to_s,
         :comments => comments
       }
       return novel
