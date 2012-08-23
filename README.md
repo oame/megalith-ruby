@@ -10,7 +10,7 @@ Megalith パーサー for Ruby<br>
 
 ## Installation
 
-  gem install megalith
+	gem install megalith
 
 ## Usage
 
