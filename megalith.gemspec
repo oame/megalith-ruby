@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "megalith"
   gem.require_paths = ["lib"]
   gem.version       = Megalith::VERSION
+  gem.add_development_dependency "rake"
+  gem.add_development_dependency "rspec"
 end

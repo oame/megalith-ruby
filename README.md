@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/oame/megalith-ruby.png)](http://travis-ci.org/oame/megalith-ruby)
 
-Megalith パーサー for Ruby<br>
+Megalith パーサー for Ruby
 
 ## Requirements
 
